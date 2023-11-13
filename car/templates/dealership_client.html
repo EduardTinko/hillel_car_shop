@@ -1,0 +1,41 @@
+<style>
+    .register {
+        width: 500px;
+        padding: 20px;
+        background-color: burlywood;
+        border-radius: 20px;
+    }
+
+    .add_car_button{
+        background-color: green;
+        color: white;
+        padding: 4px 16px;
+        cursor: pointer;
+    }
+
+</style>
+<body style="background: bisque">
+<form action="" method="post">
+    <div class="register">
+        {% csrf_token %}
+        <p>
+            <label for="client">Оберіть клієнта:</label>
+            <select name="client" id="client">
+                {% for client in clients %}
+                    <option value="{{ client.id }}">{{ client.name }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            <label for="dealership">Оберіть дилерський цетр:</label>
+            <select name="dealership" id="dealership">
+                {% for dealership in dealerships %}
+                    <option value="{{ dealership.id }}">{{ dealership.name }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <input class="add_car_button" type="submit" value="Register">
+    </div>
+
+</form>
+</body>
