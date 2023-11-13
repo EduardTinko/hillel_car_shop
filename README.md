@@ -10,7 +10,7 @@ Load demo database(optional):
 ```angular2html
 python manage.py fake_date
 ```
-run server:
+Run server:
 ```angular2html
 python manage.py runserver
 ```
