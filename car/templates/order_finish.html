@@ -1,0 +1,63 @@
+<title>
+    OrderFinish
+</title>
+<style>
+    .title{
+        text-align: center;
+        background-color: burlywood;
+        margin-left: 200px;
+        margin-right: 200px;
+        border-radius: 20px;
+
+    }
+
+    .cars {
+        margin-left: 200px;
+        width: 800px;
+        background-color: burlywood;
+        margin-bottom: 30px;
+        padding: 20px;
+        position: relative;
+        border-radius: 20px;
+    }
+
+    .pay_order_button{
+        width: 150px;
+        background-color: green;
+        color: white;
+        padding: 8px 16px;
+        cursor: pointer;
+
+    }
+    .cart{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+    }
+</style>
+<body style="background: bisque">
+<div class="title">
+    <h1>Оплата успішно проведена!</h1>
+    <h1>Дякуємо за покупку автомобіля</h1>
+    <h1>Спислк придбаних автомобілів:</h1>
+
+</div>
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        {% for car in sell_cars %}
+            <div class="cars">
+                <li>
+                    Марка авто: {{ car.car_type.brand }} Модель авто: {{ car.car_type.model }}
+                    Колір: {{ car.color }} Рік випуску: {{ car.year }} Номерний знак: {{ car.licence.number }}
+                </li>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="cart">
+        <p><button class="pay_order_button" type="submit" name="car_list">Переглянути більше автомобілів</button></p>
+        <p><button class="pay_order_button" type="submit" name="dealership_client">Початкова сторінка</button></p>
+    </div>
+</form>
+</body>
