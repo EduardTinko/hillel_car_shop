@@ -1,9 +1,10 @@
 import random
 
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
 
-from ...models import Car, CarType, Client, Dealership, Licence, Order, OrderQuantity
+from ...models import Car, CarType, Dealership, Licence, Order, OrderQuantity
 
 fake = Faker("uk_UA")
 
@@ -35,22 +36,13 @@ dealer_ship_names = [
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        Client.objects.all().delete()
+        User.objects.all().delete()
         Car.objects.all().delete()
         CarType.objects.all().delete()
         Dealership.objects.all().delete()
         Licence.objects.all().delete()
         OrderQuantity.objects.all().delete()
         Order.objects.all().delete()
-
-        for _ in range(5):
-            random_name = fake.name()
-            random_email = fake.email()
-            random_phone = fake.phone_number()
-
-            Client.objects.create(
-                name=random_name, email=random_email, phone=random_phone
-            )
 
         for item in car_brands_and_models:
             random_price = random.randint(10000, 50000)

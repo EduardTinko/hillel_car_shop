@@ -1,53 +1,86 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from faker import Faker
 
-from .models import Car, Client, Dealership, Order, OrderQuantity, Licence
+from .forms import CustomUserCreationForm
+from .models import Car, Dealership, Order, OrderQuantity, Licence
 
 # Create your views here.
 
 fake = Faker()
 
 
+def register(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    form = CustomUserCreationForm()
+    return render(request, "register.html", {"form": form})
+
+
+def logout(request):
+    logout(request)
+    return redirect("register")
+
+
 def dealership_client(request):
+    user = request.user
+    dealerships = Dealership.objects.all()
     if request.method == "GET":
-        clients = Client.objects.all()
-        dealerships = Dealership.objects.all()
-        context = {"dealerships": dealerships, "clients": clients}
+        context = {"dealerships": dealerships, "user": user}
         return render(request, "dealership_client.html", context)
-    client_id = request.POST.get("client")
-    dealership_id = request.POST.get("dealership")
-    return redirect(reverse("car", args=(dealership_id, client_id)))
+
+    if "view_cars" in request.POST:
+        user_id = user.id
+        dealership_id = request.POST.get("dealership")
+        if not user_id:
+            return redirect(reverse("car_list", args=[dealership_id]))
+        return redirect(reverse("car", args=(dealership_id, user_id)))
+    return render(
+        request, "dealership_client.html", {"dealerships": dealerships, "user": user}
+    )
 
 
-def car(request, dealership_id, client_id):
-    client = Client.objects.get(id=client_id)
+@login_required
+def car(request, dealership_id, user_id):
+    user = User.objects.get(id=user_id)
     dealership = Dealership.objects.get(id=dealership_id)
     order, is_created = Order.objects.get_or_create(
-        client=client, dealership=dealership, is_paid=False
+        user=user, dealership=dealership, is_paid=False
     )
     cars = Car.objects.filter(car_type__dealerships=dealership, owner__isnull=True)
 
     if request.method == "GET":
-        cars_in_order = len(Car.objects.filter(blocked_by_order__isnull=False))
+        cars_in_order = len(Car.objects.filter(blocked_by_order=order.id))
         context = {"order": order, "cars": cars, "cars_in_order": cars_in_order}
         return render(request, "car.html", context)
-
-    if "dealership_client" in request.POST:
-        return redirect("dealership_client")
 
     if "ad_car" in request.POST:
         ad_car_id = request.POST.get("ad_car")
         add_car_in_order(ad_car_id, order)
-        cars_in_order = len(Car.objects.filter(blocked_by_order__isnull=False))
+        cars_in_order = len(Car.objects.filter(blocked_by_order=order.id))
         context = {"order": order, "cars": cars, "cars_in_order": cars_in_order}
         return render(request, "car.html", context)
 
     if "create_order" in request.POST:
         order_id = order.id
         return redirect(reverse("order_cart", args=[order_id]))
+    return HttpResponse("Bad request", status=400)
+
+
+def car_list(request, dealership_id):
+    dealership = Dealership.objects.get(id=dealership_id)
+    cars = Car.objects.filter(car_type__dealerships=dealership, owner__isnull=True)
+    if request.method == "GET":
+        return render(
+            request, "car_list.html", {"cars": cars, "dealership": dealership}
+        )
     return HttpResponse("Bad request", status=400)
 
 
@@ -64,6 +97,7 @@ def add_car_in_order(ad_car_id, order):
         order_quantity.save()
 
 
+@login_required
 def order_cart(request, order_id):
     order = Order.objects.get(id=order_id)
     cars_in_order = Car.objects.filter(blocked_by_order__id=order.id)
@@ -78,9 +112,6 @@ def order_cart(request, order_id):
     if request.method == "GET":
         return render(request, "order_cart.html", context)
 
-    if "dealership_client" in request.POST:
-        return redirect("dealership_client")
-
     if "pay_order" in request.POST:
         if total_price != 0:
             for car_in_order in cars_in_order:
@@ -93,7 +124,7 @@ def order_cart(request, order_id):
         return render(request, "order_cart.html", context)
 
     if "car_list" in request.POST:
-        return redirect(reverse("car", args=(order.dealership.id, order.client.id)))
+        return redirect(reverse("car", args=(order.dealership.id, order.user.id)))
 
     if "clear_cart" in request.POST:
         for car_in_order in cars_in_order:
@@ -110,15 +141,14 @@ def order_cart(request, order_id):
 
 def order_finish(request, order_id):
     order = Order.objects.get(id=order_id)
-    sell_cars = Car.objects.filter(owner=order.client.id)
+    sell_cars = Car.objects.filter(owner=order.user.id)
     if request.method == "GET":
-        return render(request, "order_finish.html", {"sell_cars": sell_cars})
-
-    if "dealership_client" in request.POST:
-        return redirect("dealership_client")
+        return render(
+            request, "order_finish.html", {"sell_cars": sell_cars, "order": order}
+        )
 
     if "car_list" in request.POST:
-        return redirect(reverse("car", args=(order.dealership.id, order.client.id)))
+        return redirect(reverse("car", args=(order.dealership.id, order.user.id)))
     return HttpResponse("Bad request", status=400)
 
 

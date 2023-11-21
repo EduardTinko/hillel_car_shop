@@ -50,6 +50,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    "bootstrap5",
     "whitenoise.runserver_nostatic",
     "car.apps.CarConfig",
     "django.contrib.admin",
@@ -174,3 +175,15 @@ WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/register/"
+LOGIN_URL = "/login/"
+
+# Email settings
+ELASTICEMAIL_API_KEY = os.getenv("ELASTICEMAIL_API_KEY")
+EMAIL_HOST = "smtp.elasticemail.com"
+EMAIL_PORT = 2525
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ELASTICEMAIL_API_KEY
+EMAIL_HOST_PASSWORD = ELASTICEMAIL_API_KEY

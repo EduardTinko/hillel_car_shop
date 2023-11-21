@@ -1,12 +1,21 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
-from .models import Car, CarType, Client, Dealership, Order, OrderQuantity, Licence
+from .models import Car, CarType, Dealership, Order, OrderQuantity, Licence
 
 
-class ClientForm(forms.Form):
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["password1"].help_text = ""
+
     class Meta:
-        model = Client
-        fields = ["name", "email", "phone"]
+        model = User
+        fields = ["username", "email", "password1", "password2"]
 
 
 class CarTypeForm(forms.Form):
@@ -27,12 +36,12 @@ class LicenceForm(forms.Form):
 
 class DealershipForm(forms.Form):
     model = Dealership
-    fields = ["name", "available_car_type", "clients"]
+    fields = ["name", "available_car_type", "users"]
 
 
 class OrderForm(forms.Form):
     model = Order
-    fields = ["client", "dealership", "is_paid"]
+    fields = ["user", "dealership", "is_paid"]
 
 
 class OrderQuantityForm(forms.Form):
