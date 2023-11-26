@@ -1,5 +1,8 @@
+import requests
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.signing import Signer, BadSignature
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -14,11 +17,43 @@ from .models import Car, Dealership, Order, OrderQuantity, Licence
 fake = Faker()
 
 
+def send_active_email(request, user: User):
+    user_signed = Signer().sign(user.id)
+    signed_url = request.build_absolute_uri(f"/activate/{user_signed}")
+    email_host_password = settings.YOUR_API_KEY
+    requests.post(
+        "https://api.eu.mailgun.net/v3/tinko.store/messages",
+        auth=("api", email_host_password),
+        data={
+            "from": "Excited User <228rubiks228@gmail.com>",
+            "to": [user.email],
+            "subject": "Registration complete",
+            "text": "Click " + signed_url,
+        },
+    )
+
+
+def activate(request, user_signed):
+    try:
+        user_id = Signer().unsign(user_signed)
+    except BadSignature:
+        return redirect("login")
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return redirect("login")
+    user.is_active = True
+    user.save()
+    return redirect("login")
+
+
 def register(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
+            form.instance.is_active = False
             form.save()
+            send_active_email(request, form.instance)
             return redirect("login")
     form = CustomUserCreationForm()
     return render(request, "register.html", {"form": form})

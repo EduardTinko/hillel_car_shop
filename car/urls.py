@@ -1,7 +1,15 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from .views import dealership_client, car, order_cart, order_finish, register, car_list
+from .views import (
+    dealership_client,
+    car,
+    order_cart,
+    order_finish,
+    register,
+    car_list,
+    activate,
+)
 
 urlpatterns = [
     path("", dealership_client, name="dealership_client"),
@@ -12,4 +20,5 @@ urlpatterns = [
     path("car/dealer_id=<int:dealership_id>", car_list, name="car_list"),
     path("order_cart/order_id=<int:order_id>/", order_cart, name="order_cart"),
     path("order_finish/order_id=<int:order_id>/", order_finish, name="order_finish"),
+    path("activate/<user_signed>", activate, name="activate"),
 ]
