@@ -1,0 +1,17 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="list.pizza" />
+          <option value="reqests" />
+          <option value="src.pizzastore.model.client.Client.__getitem__" />
+          <option value="csv.DictReader.*" />
+          <option value="students_site.polls.models.Students.*" />
+          <option value="site_sms.celery.*" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
