@@ -50,6 +50,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    "bootstrap5",
     "whitenoise.runserver_nostatic",
     "car.apps.CarConfig",
     "django.contrib.admin",
@@ -174,3 +175,12 @@ WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/register/"
+LOGIN_URL = "/login/"
+
+# Email settings
+YOUR_API_KEY = os.getenv("YOUR_API_KEY")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

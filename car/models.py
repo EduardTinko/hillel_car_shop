@@ -1,13 +1,5 @@
+from django.contrib.auth.models import User
 from django.db import models
-
-
-class Client(models.Model):
-    name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
-    phone = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.name
 
 
 class CarType(models.Model):
@@ -27,7 +19,7 @@ class Car(models.Model):
         "Order", on_delete=models.SET_NULL, null=True, related_name="reserved_cars"
     )
     owner = models.ForeignKey(
-        Client, on_delete=models.SET_NULL, null=True, related_name="cars"
+        User, on_delete=models.SET_NULL, null=True, related_name="cars"
     )
 
     def block(self, order):
@@ -41,7 +33,7 @@ class Car(models.Model):
     def sell(self):
         if not self.blocked_by_order:
             raise Exception("Car is not reserved")
-        self.owner = self.blocked_by_order.client
+        self.owner = self.blocked_by_order.user
         self.save()
 
     def __str__(self):
@@ -61,14 +53,14 @@ class Licence(models.Model):
 class Dealership(models.Model):
     name = models.CharField(max_length=50)
     available_car_types = models.ManyToManyField(CarType, related_name="dealerships")
-    clients = models.ManyToManyField(Client, related_name="dealerships")
+    users = models.ManyToManyField(User, related_name="dealerships")
 
     def __str__(self):
         return self.name
 
 
 class Order(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="orders")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     dealership = models.ForeignKey(
         Dealership, on_delete=models.CASCADE, related_name="orders"
     )
@@ -81,8 +73,3 @@ class OrderQuantity(models.Model):
     )
     quantity = models.PositiveIntegerField(default=1)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="car_types")
-
-
-from django.db import models
-
-# Create your models here.

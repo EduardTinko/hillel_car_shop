@@ -1,116 +1,108 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
 <title>
     Dealership:{{ order.dealership.name }}
 </title>
-<style>
-    .title{
-        text-align: center;
-        background-color: burlywood;
-        margin-left: 200px;
-        margin-right: 200px;
-        border-radius: 20px;
 
+<style>
+    .title {
+        text-align: center;
+        border-radius: 20px;
     }
 
-    .client{
-        position: absolute;
-        top: 10px;
-        left: 10px;
+    .client {
+        left: -15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
         text-align: left;
-        background-color: burlywood;
-        width: 150px;
+        background-color: bisque;
         padding: 20px;
         border-radius: 20px;
     }
 
-    .car_grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        margin-right: 200px;
-        margin-left: 200px;
-    }
-
     .cars {
-        width: 400px;
-        height: 170px;
-        background-color: burlywood;
+        background-color: bisque;
         margin-bottom: 30px;
         padding: 20px;
         position: relative;
         border-radius: 20px;
     }
 
-    .add_car_button{
-        background-color: green;
-        color: white;
-        padding: 8px 16px;
-        cursor: pointer;
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-    }
-
-    .car_in_order_button{
-        background-color: rgb(128, 128, 128);
-        color: white;
-        padding: 8px 16px;
-        cursor: pointer;
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-    }
-
-    .create_order_button{
-        background-color: green;
-        color: white;
-        padding: 8px 16px;
-        cursor: pointer;
-
-    }
-    .cart{
-        background-color: burlywood;
-        position: absolute;
-        top: 10px;
-        right: 10px;
+    .cart {
+        right: -15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: bisque;
+        position: relative;
         text-align: center;
         padding: 20px;
-        width: 150px;
         border-radius: 20px;
     }
 </style>
 <body style="background: bisque">
-<div class="title">
-    <h1>Каталог автомобілів в дилерському центрі {{ order.dealership.name }}</h1>
-</div>
-<form method="POST">
+<form action="" method="post">
     {% csrf_token %}
-    <div class="car_grid">
-        {% for car in cars %}
-            <div class="cars">
-                <h2>Марка авто: {{ car.car_type.brand }}</h2>
-                <h2>Модель авто: {{ car.car_type.model }}</h2>
-                <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
-                <p>Ціна: {{ car.car_type.price }}$</p>
-                {% if car.blocked_by_order is not None %}
-                    <button class="car_in_order_button" type="submit" name="ad_car" value="{{ car.id }}" disabled>
-                        Додати до кошику
-                    </button>
-                {% else %}
-                    <button class="add_car_button" type="submit" name="ad_car" value="{{ car.id }}">
-                        Додати до кошику
-                    </button>
-                {% endif %}
+    <div class="col-10 mx-auto my-5"
+         style="background-color: burlywood; min-height: 85vh; position: absolute; left: 50%; transform: translateX(-50%);">
+
+        <div class="title my-5">
+            <h1>Каталог автомобілів в дилерському центрі {{ order.dealership.name }}</h1>
+        </div>
+        <div class="row">
+            <div class="client col-4 my-5">
+                <h3>Клієнт: {{ order.user.username }}</h3>
+                <a href="{% url 'dealership_client' %}">
+                    <button type="button" class="btn btn-primary">Початкова сторінка</button>
+                </a>
             </div>
-        {% endfor %}
-    </div>
-    <div class="cart">
-        <h2>КОШИК</h2>
-        <h3>Вибраних авто: {{ cars_in_order }}</h3>
-        <p><button class="create_order_button" type="submit" name="create_order">Оформити замовлення</button></p>
-        <button class="create_order_button" type="submit" name="dealership_client">Початкова сторінка</button>
-    </div>
-    <div class="client">
-        <h3>Клієнт: {{ order.client.name }}</h3>
+            <div class="cart col-3 ms-auto my-5">
+                <h2>КОШИК</h2>
+                <h3>Вибраних авто: {{ cars_in_order }}</h3>
+                <p>
+                    <button class="btn btn-primary " type="submit" name="create_order">Оформити замовлення</button>
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                {% for car in cars %}
+                    <div class="col-5 mx-auto">
+                        <div class="cars">
+                            <h2>Марка авто: {{ car.car_type.brand }}</h2>
+                            <h2>Модель авто: {{ car.car_type.model }}</h2>
+                            <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
+                            <p>Ціна: {{ car.car_type.price }}$</p>
+                            {% if car.blocked_by_order is not None %}
+                                <button class="btn btn-secondary d-block ms-auto" type="submit" name="ad_car"
+                                        value="{{ car.id }}"
+                                        disabled>
+                                    Додати до кошику
+                                </button>
+                            {% else %}
+                                <button class="btn btn-success d-block ms-auto" type="submit" name="ad_car"
+                                        value="{{ car.id }}">
+                                    Додати до кошику
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </form>
 </body>
