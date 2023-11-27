@@ -183,4 +183,4 @@ LOGIN_URL = "/login/"
 # Email settings
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-YOUR_API_KEY = "6f35be0b18a603cf626dde4e976aeb6f-5d2b1caa-b7a936aa"
+YOUR_API_KEY = os.getenv("YOUR_API_KEY")
