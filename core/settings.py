@@ -86,26 +86,6 @@ MIDDLEWARE = [
 ]
 
 # Provider specific settings
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        "APP": {
-            "client_id": "592096471278-c0tu76p8qi4c1dd04qtnbkdbc0ib801h.apps.googleusercontent.com",
-            "secret": "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",
-            "key": "",
-        },
-        "SCOPE": [
-            "profile",
-            "email",
-        ],
-        "AUTH_PARAMS": {
-            "access_type": "offline",
-        },
-        "OAUTH_PKCE_ENABLED": True,
-    }
-}
 
 ROOT_URLCONF = "core.urls"
 
@@ -232,6 +212,30 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.eu.mailgun.org"
 EMAIL_HOST_USER = "postmaster@tinko.store"
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = "228rubiks228@gmail.com"
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
+
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        "APP": {
+            "client_id": GOOGLE_CLIENT_ID,
+            "secret": GOOGLE_CLIENT_SECRET,
+            "key": "",
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "offline",
+        },
+        "OAUTH_PKCE_ENABLED": True,
+    }
+}
