@@ -27,20 +27,19 @@
             {% with is_authenticated=user.is_authenticated %}
                 {% if is_authenticated %}
                     <h3>Користувач: {{ user.username }}</h3>
-                    <a href="{% url 'logout' %}">
+                    <a href="{% url 'account_logout' %}">
                         <button type="button" class="btn btn-primary my-2">Вийти з акаунта</button>
                     </a>
                 {% else %}
                     <h3>Анонімний користувач</h3>
-                    <p><a href="{% url 'login' %}">
-                        <button type="button" class="btn btn-primary my-1" >Увійти</button>
+                    <p><a href="{% url 'account_login' %}">
+                        <button type="button" class="btn btn-primary my-1">Увійти</button>
                     </a></p>
 
-                    <a href="{% url 'register' %}">
+                    <a href="{% url 'account_signup' %}">
                         <button type="button" class="btn btn-primary my-1">Створити Акаунт</button>
                     </a>
                 {% endif %}
-
             {% endwith %}
         </div>
     </form>

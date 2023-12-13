@@ -1,0 +1,17 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}
+    {% trans "Verify Your Email Address" %}
+{% endblock head_title %}
+{% block content %}
+    {% element h2 %}
+        {% trans "Підтвердьте свою електронну адресу" %}
+    {% endelement %}
+    <p>
+        {% blocktrans %}Ми відправили вам лист для підтвердження. Слідуйте за посиланням, щоб завершити процес
+            реєстрації. Якщо ви не бачите листа для підтвердження у своїй основній поштовій скриньці, перевірте папку
+            "Спам".{% endblocktrans %}
+    </p>
+{% endblock content %}
+
