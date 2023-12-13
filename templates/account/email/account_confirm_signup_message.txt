@@ -1,0 +1,5 @@
+{% load account %}
+{% load i18n %}{% user_display user as user_display %}{% language user_display.lang %}{% blocktrans %}Hello from {{ site_name }}! You're receiving this email because someone (hopefully you) signed up for an account at {{ site_name }}.{% endblocktrans %}
+
+{% blocktrans %}To activate your account, click the following link:{% endblocktrans %}
+{{ activate_url }}
