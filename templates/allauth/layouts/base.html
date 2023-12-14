@@ -1,0 +1,51 @@
+{% extends "allauth/layouts/style.html" %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+{% block title %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block head_title %}
+        {% endblock head_title %}
+    </title>
+    {% block extra_head %}
+    {% endblock extra_head %}
+{% endblock title %}
+{% block register %}
+    {% block body %}
+        {% block content %}
+        {% endblock content %}
+    {% endblock body %}
+    {% block extra_body %}
+    {% endblock extra_body %}
+    <hr>
+    <div>
+        {% if user.is_authenticated %}
+
+            <p>
+                <a href="{% url 'account_logout' %}" class="btn btn-primary"
+                   role="button">{% trans "Вийти з аккаунта" %}</a>
+            </p>
+        {% else %}
+            {% if request.path != '/accounts/login/' %}
+                <p>
+                    <a href="{% url 'account_login' %}" class="btn btn-primary"
+                       role="button">{% trans "Увійти" %}</a>
+                </p>
+            {% endif %}
+            {% if request.path != '/accounts/signup/' %}
+                <p>
+                    <a href="{% url 'account_signup' %}" class="btn btn-primary"
+                       role="button">{% trans "Зареєструватися" %}</a>
+                </p>
+            {% endif %}
+        {% endif %}
+        <p>
+            <a href="{% url 'dealership_client' %}">
+                <button type="button" class="btn btn-outline-info">Початкова сторінка</button>
+            </a>
+        </p>
+    </div>
+{% endblock register %}
+</html>

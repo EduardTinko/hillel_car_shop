@@ -1,0 +1,43 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load account %}
+{% load allauth %}
+{% block head_title %}
+    {% trans "Confirm Email Address" %}
+{% endblock head_title %}
+{% block content %}
+    {% element h2 %}
+        {% trans "Підтвердіть електронну адресу" %}
+    {% endelement %}
+    {% if confirmation %}
+        {% user_display confirmation.email_address.user as user_display %}
+        {% if can_confirm %}
+            <p>
+                {% blocktrans with confirmation.email_address.email as email %}Будь ласка, підтвердьте, що
+                    <a href="mailto:{{ email }}">{{ email }}</a> є електронною адресою для користувача
+                    {{ user_display }}
+                    .{% endblocktrans %}
+            </p>
+            {% url 'account_confirm_email' confirmation.key as action_url %}
+            {% element form method="post" action=action_url %}
+                {% slot actions %}
+                    {% csrf_token %}
+                    <button class="btn btn-outline-success">
+                        {% trans "Підтвердити" %}
+                    </button>
+                {% endslot %}
+            {% endelement %}
+        {% else %}
+            <p>
+                {% blocktrans %}Неможливо підтвердити {{ email }} тому що вже підтверджено іншим
+                    користувачем.{% endblocktrans %}
+            </p>
+        {% endif %}
+    {% else %}
+        {% url 'account_email' as email_url %}
+        <p>
+            {% blocktrans %}Це посилання для підтвердження електронної пошти вже застаріло або недійсне. Будь ласка,
+                <a href="{{ email_url }}">видайте новий запит на підтвердження електронної пошти</a>.{% endblocktrans %}
+        </p>
+    {% endif %}
+{% endblock content %}
