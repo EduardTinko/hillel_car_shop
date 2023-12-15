@@ -23,7 +23,6 @@ class Car(models.Model):
         User, on_delete=models.SET_NULL, null=True, related_name="cars"
     )
 
-
     def block(self, order):
         self.blocked_by_order = order
         self.save()
@@ -75,4 +74,3 @@ class OrderQuantity(models.Model):
     )
     quantity = models.PositiveIntegerField(default=1)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="car_types")
-

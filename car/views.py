@@ -8,6 +8,7 @@ from faker import Faker
 
 from .models import Car, Dealership, Order, OrderQuantity, Licence
 from .forms import CarForm
+
 # Create your views here.
 
 fake = Faker()
@@ -76,16 +77,12 @@ def car_edit(request, car_id, dealership_id, user_id):
     edited_car = Car.objects.get(id=car_id)
     if request.method == "GET":
         form = CarForm(instance=edited_car)
-        return render(
-            request, "car_edit.html", {"form": form}
-        )
+        return render(request, "car_edit.html", {"form": form})
     form = CarForm(request.POST, request.FILES, instance=edited_car)
     if form.is_valid():
         form.save()
         return redirect(reverse("car", args=(dealership_id, user_id)))
-    return render(
-        request, "car_edit.html", {"car": edited_car, "form": form}
-    )
+    return render(request, "car_edit.html", {"car": edited_car, "form": form})
 
 
 def add_car_in_order(ad_car_id, order):
@@ -164,4 +161,3 @@ def generate_license(sell_car):
     )
     licence, create = Licence.objects.get_or_create(car=sell_car, number=car_license)
     licence.save()
-

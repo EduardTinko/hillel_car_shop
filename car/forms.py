@@ -60,4 +60,3 @@ class OrderForm(forms.Form):
 class OrderQuantityForm(forms.Form):
     model = OrderQuantity
     fields = ["car_type", "quantity", "order"]
-
