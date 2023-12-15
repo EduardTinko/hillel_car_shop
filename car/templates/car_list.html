@@ -51,7 +51,7 @@
     }
 </style>
 <body style="background: bisque">
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
     <div class="col-10 mx-auto my-5"
          style="background-color: burlywood; min-height: 85vh; position: absolute; left: 50%; transform: translateX(-50%);">
         <div class="title my-5">
@@ -84,6 +84,9 @@
                         <div class="cars">
                             <h2>Марка авто: {{ car.car_type.brand }}</h2>
                             <h2>Модель авто: {{ car.car_type.model }}</h2>
+                            {% if car.photo %}
+                                <img src="{{ car.photo.url }}" alt="Car Photo" width="450" height="300">
+                            {% endif %}
                             <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
                             <p>Ціна: {{ car.car_type.price }}$</p>
                         </div>

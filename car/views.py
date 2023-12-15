@@ -7,7 +7,7 @@ from django.urls import reverse
 from faker import Faker
 
 from .models import Car, Dealership, Order, OrderQuantity, Licence
-
+from .forms import CarForm
 # Create your views here.
 
 fake = Faker()
@@ -52,6 +52,10 @@ def car(request, dealership_id, user_id):
         context = {"order": order, "cars": cars, "cars_in_order": cars_in_order}
         return render(request, "car.html", context)
 
+    if "car_edit" in request.POST:
+        car_id = int(request.POST.get("car_edit"))
+        return redirect(reverse("car_edit", args=(car_id, dealership_id, user_id)))
+
     if "create_order" in request.POST:
         order_id = order.id
         return redirect(reverse("order_cart", args=[order_id]))
@@ -66,6 +70,22 @@ def car_list(request, dealership_id):
             request, "car_list.html", {"cars": cars, "dealership": dealership}
         )
     return HttpResponse("Bad request", status=400)
+
+
+def car_edit(request, car_id, dealership_id, user_id):
+    edited_car = Car.objects.get(id=car_id)
+    if request.method == "GET":
+        form = CarForm(instance=edited_car)
+        return render(
+            request, "car_edit.html", {"form": form}
+        )
+    form = CarForm(request.POST, request.FILES, instance=edited_car)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse("car", args=(dealership_id, user_id)))
+    return render(
+        request, "car_edit.html", {"car": edited_car, "form": form}
+    )
 
 
 def add_car_in_order(ad_car_id, order):
@@ -144,3 +164,4 @@ def generate_license(sell_car):
     )
     licence, create = Licence.objects.get_or_create(car=sell_car, number=car_license)
     licence.save()
+

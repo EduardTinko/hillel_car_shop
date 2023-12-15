@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block title %}
+    EditCar
+{% endblock %}
+
+{% block register %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary my-1">Зберегти зміни</button>
+</form>
+{% endblock %}

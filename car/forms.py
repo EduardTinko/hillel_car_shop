@@ -30,15 +30,16 @@ class MyCustomLoginForm(LoginForm):
             )
 
 
-class CarTypeForm(forms.Form):
+class CarTypeForm(forms.ModelForm):
     class Meta:
         model = CarType
         fields = ["brand", "model", "price"]
 
 
-class CarForm(forms.Form):
-    model = Car
-    fields = ["car_type", "color", "year", "blocked_by_order", "owner"]
+class CarForm(forms.ModelForm):
+    class Meta:
+        model = Car
+        fields = ["car_type", "color", "year", "photo"]
 
 
 class LicenceForm(forms.Form):
@@ -59,3 +60,4 @@ class OrderForm(forms.Form):
 class OrderQuantityForm(forms.Form):
     model = OrderQuantity
     fields = ["car_type", "quantity", "order"]
+

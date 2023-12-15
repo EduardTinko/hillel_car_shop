@@ -84,12 +84,20 @@
                         <div class="cars">
                             <h2>Марка авто: {{ car.car_type.brand }}</h2>
                             <h2>Модель авто: {{ car.car_type.model }}</h2>
+                            {% if car.photo %}
+                                <img src="{{ car.photo.url }}" alt="Car Photo" width="450" height="300">
+                            {% endif %}
                             <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
                             <p>Ціна: {{ car.car_type.price }}$</p>
+                            <p>
+                                <button class="btn btn-success d-block ms-auto" type="submit" name="car_edit"
+                                        value="{{ car.id }}">
+                                    Редагувати
+                                </button>
+                            </p>
                             {% if car.blocked_by_order is not None %}
                                 <button class="btn btn-secondary d-block ms-auto" type="submit" name="ad_car"
-                                        value="{{ car.id }}"
-                                        disabled>
+                                        value="{{ car.id }}" disabled>
                                     Додати до кошику
                                 </button>
                             {% else %}
