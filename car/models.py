@@ -15,6 +15,7 @@ class Car(models.Model):
     car_type = models.ForeignKey(CarType, on_delete=models.CASCADE)
     color = models.CharField(max_length=50)
     year = models.IntegerField()
+    photo = models.ImageField(upload_to="car_photo", blank=True)
     blocked_by_order = models.ForeignKey(
         "Order", on_delete=models.SET_NULL, null=True, related_name="reserved_cars"
     )
