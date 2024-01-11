@@ -53,7 +53,7 @@ class Licence(models.Model):
 
 class Dealership(models.Model):
     name = models.CharField(max_length=50)
-    available_car_types = models.ManyToManyField(CarType, related_name="dealerships")
+    available_car = models.ManyToManyField(Car, related_name="dealerships")
     users = models.ManyToManyField(User, related_name="dealerships")
 
     def __str__(self):
@@ -66,6 +66,7 @@ class Order(models.Model):
         Dealership, on_delete=models.CASCADE, related_name="orders"
     )
     is_paid = models.BooleanField(default=False)
+    total = models.IntegerField(default=0)
 
 
 class OrderQuantity(models.Model):
