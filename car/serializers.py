@@ -30,7 +30,7 @@ class DealershipSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Dealership
-        fields = ["name", "available_car"]
+        fields = ["id", "name", "available_car"]
 
 
 class OrderQuantitySerializer(serializers.ModelSerializer):
