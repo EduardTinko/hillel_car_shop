@@ -179,16 +179,17 @@ class MonoAcquiringWebhookReceiver(APIView):
         reference = int(request.data.get("reference"))
         order = Order.objects.get(id=reference)
         if order.order_id != request.data.get("invoiceId"):
-            print(order.order_id, request.data.get("invoiceId"))
             return Response({"status": "error"}, status=400)
-        cars = Car.objects.filter(blocked_by_order=order.id)
-        for car_item in cars:
-            car_item.sell()
-            car_item.unblock()
-            generate_license(car_item)
-        order.is_paid = True
-        order.save()
-        return Response({"status": "ok"})
+        if request.data.get("status") == "success":
+            cars = Car.objects.filter(blocked_by_order=order.id)
+            for car_item in cars:
+                car_item.sell()
+                car_item.unblock()
+                generate_license(car_item)
+            order.is_paid = True
+            order.save()
+            return Response({"status": "ok"})
+        return Response({"status": "error"}, status=400)
 
 
 def dealership_client(request):
