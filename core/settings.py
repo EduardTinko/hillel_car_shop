@@ -254,3 +254,5 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ]
 }
+
+MONOBANK_TOKEN = os.getenv("MONOBANK_TOKEN")

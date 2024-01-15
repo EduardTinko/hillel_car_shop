@@ -56,6 +56,11 @@ urlpatterns = [
     ),
     path("api-token-auth/", rest_framework.authtoken.views.obtain_auth_token),
     path("api/auth/", include("rest_framework.urls")),
+    path(
+        "webhook-mono/",
+        views.MonoAcquiringWebhookReceiver.as_view(),
+        name="webhook-mono",
+    ),
 ]
 
 urlpatterns += router.urls
