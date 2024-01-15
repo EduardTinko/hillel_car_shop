@@ -174,11 +174,12 @@ class MonoAcquiringWebhookReceiver(APIView):
     def post(self, request):
         try:
             verify_signature(request)
-        except Exception:
+        except Exception as e:
             return Response({"status": "error"}, status=400)
-        reference = request.data.get("reference")
+        reference = int(request.data.get("reference"))
         order = Order.objects.get(id=reference)
         if order.order_id != request.data.get("invoiceId"):
+            print(order.order_id, request.data.get("invoiceId"))
             return Response({"status": "error"}, status=400)
         cars = Car.objects.filter(blocked_by_order=order.id)
         for car_item in cars:

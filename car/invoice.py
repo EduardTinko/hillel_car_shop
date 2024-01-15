@@ -1,6 +1,6 @@
 import ecdsa
 import requests
-from django.utils.baseconv import base64
+import base64
 import hashlib
 
 from car.models import Order, MonoSettings
@@ -35,7 +35,6 @@ def verify_signature(request):
         request.body,
         MonoSettings.get_latest_or_add(get_monobank_public_key).public_key,
     )
-
     if ok:
         return
     MonoSettings.create_new(get_monobank_public_key)
@@ -77,8 +76,6 @@ def create_invoice(order: Order, webhook_url):
         json=request_body,
         headers=headers,
     )
-    print(request_body)
-    print(headers)
     r.raise_for_status()
     order.order_id = r.json()["invoiceId"]
     order.invoice_url = r.json()["pageUrl"]

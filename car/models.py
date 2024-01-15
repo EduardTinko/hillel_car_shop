@@ -80,7 +80,7 @@ class OrderQuantity(models.Model):
 
 
 class MonoSettings(models.Model):
-    public_key = models.CharField(max_length=100, unique=True)
+    public_key = models.CharField(max_length=300, unique=True)
     received_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
