@@ -153,7 +153,7 @@ class ConfirmOrderAPIView(APIView):
     def post(self, request, order_id, *args, **kwargs):
         order = self._get_order(order_id=order_id)
         self.check_object_permissions(request, order)
-        create_invoice(order, reverse("webhook-mono"))
+        create_invoice(order, request.build_absolute_uri(reverse("webhook-mono")))
         return Response({"invoice_url": order.invoice_url})
 
     def delete(self, request, order_id, *args, **kwargs):
