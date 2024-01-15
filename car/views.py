@@ -292,7 +292,7 @@ def order_cart(request, order_id):
         return render(request, "order_cart.html", context)
 
     if "pay_order" in request.POST:
-        create_invoice(order, reverse("webhook-mono"))
+        create_invoice(order, request.build_absolute_uri(reverse("webhook-mono")))
         return Response({"invoice_url": order.invoice_url})
 
     if "car_list" in request.POST:
