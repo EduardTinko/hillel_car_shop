@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .forms import CarForm
+from .invoice import create_invoice, verify_signature
 from .models import Car, Dealership, Order, OrderQuantity, Licence
 from .permissions import IsOwner
 from .serializers import (
@@ -152,16 +153,8 @@ class ConfirmOrderAPIView(APIView):
     def post(self, request, order_id, *args, **kwargs):
         order = self._get_order(order_id=order_id)
         self.check_object_permissions(request, order)
-        cars = Car.objects.filter(blocked_by_order=order.id)
-        for car_item in cars:
-            car_item.sell()
-            car_item.unblock()
-            generate_license(car_item)
-        order.is_paid = True
-        order.save()
-        return Response(
-            {"message": f"The order {order_id} is paid"}, status=status.HTTP_200_OK
-        )
+        create_invoice(order, request.build_absolute_uri(reverse("webhook-mono")))
+        return Response({"invoice_url": order.invoice_url})
 
     def delete(self, request, order_id, *args, **kwargs):
         order = self._get_order(order_id=order_id)
@@ -175,6 +168,28 @@ class ConfirmOrderAPIView(APIView):
         return Response(
             {"message": f"The order {order_id} is delete"}, status=status.HTTP_200_OK
         )
+
+
+class MonoAcquiringWebhookReceiver(APIView):
+    def post(self, request):
+        try:
+            verify_signature(request)
+        except Exception as e:
+            return Response({"status": "error"}, status=400)
+        reference = int(request.data.get("reference"))
+        order = Order.objects.get(id=reference)
+        if order.order_id != request.data.get("invoiceId"):
+            return Response({"status": "error"}, status=400)
+        if request.data.get("status") == "success":
+            cars = Car.objects.filter(blocked_by_order=order.id)
+            for car_item in cars:
+                car_item.sell()
+                car_item.unblock()
+                generate_license(car_item)
+            order.is_paid = True
+            order.save()
+            return Response({"status": "ok"})
+        return Response({"status": "error"}, status=400)
 
 
 def dealership_client(request):
@@ -277,16 +292,8 @@ def order_cart(request, order_id):
         return render(request, "order_cart.html", context)
 
     if "pay_order" in request.POST:
-        if total_price != 0:
-            for car_in_order in cars_in_order:
-                car_in_order.sell()
-                car_in_order.unblock()
-                generate_license(car_in_order)
-            order.total = total_price
-            order.is_paid = True
-            order.save()
-            return redirect(reverse("order_finish", args=[order.id]))
-        return render(request, "order_cart.html", context)
+        create_invoice(order, request.build_absolute_uri(reverse("webhook-mono")))
+        return Response({"invoice_url": order.invoice_url})
 
     if "car_list" in request.POST:
         return redirect(reverse("car", args=(order.dealership.id, order.user.id)))

@@ -1,0 +1,31 @@
+[
+  {
+    "model": "car.CarType",
+    "pk": 1,
+    "fields": {
+      "id": 1,
+      "brand": "Volkswagen",
+      "model": "Touareg",
+      "price": 35000
+    }
+  },
+  {
+    "model": "car.Car",
+    "pk": 1,
+    "fields": {
+      "id": 1,
+      "car_type": 1,
+      "color": "black",
+      "year": 2020
+    }
+  },
+  {
+    "model": "car.Dealership",
+    "pk": 1,
+    "fields": {
+      "id": 1,
+      "name": "CarShip",
+      "available_car": [1]
+    }
+  }
+]
