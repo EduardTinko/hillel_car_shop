@@ -266,7 +266,10 @@ class TestCarsAPI(APITransactionTestCase):
         assert confirm_order.json() == {"message": "The order 1 is delete"}
 
     def test_confirm_order(self):
-        with patch('core.settings.MONOBANK_TOKEN', "ud-6soRO9CE4yZptVfNs7OZ3S6-Hb8bgBHCQMt2iU-qE"):
+        with patch(
+            "core.settings.MONOBANK_TOKEN",
+            "ud-6soRO9CE4yZptVfNs7OZ3S6-Hb8bgBHCQMt2iU-qE",
+        ):
             self.login_user()
             add_car = self.client.post("/api/dealership/1/add_car/1/")
             assert add_car.status_code == 200
@@ -276,4 +279,6 @@ class TestCarsAPI(APITransactionTestCase):
             }
             confirm_order = self.client.post("/api/order/confirm/1/")
             assert confirm_order.status_code == 200
-            assert confirm_order.json()['invoice_url'].startswith('https://pay.mbnk.biz/')
+            assert confirm_order.json()["invoice_url"].startswith(
+                "https://pay.mbnk.biz/"
+            )
