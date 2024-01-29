@@ -124,7 +124,6 @@ ACCOUNT_FORMS = {
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-
 if IS_HEROKU_APP:
     DATABASES = {
         "default": dj_database_url.config(
