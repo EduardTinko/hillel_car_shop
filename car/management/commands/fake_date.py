@@ -73,7 +73,7 @@ class Command(BaseCommand):
             selected_brands = random.sample(list(available_cars), k=k)
             new_dealership.available_car.set(selected_brands)
 
-        data = os.getenv("GOOGLE_STORAGE_KEYS")
+        data = {"fasda": "dasdasd"}
 
         if data:
             with open("google_storage.json", "w") as json_file:
