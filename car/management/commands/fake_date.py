@@ -80,6 +80,8 @@ class Command(BaseCommand):
                 json_data = json.loads(data)
             except json.JSONDecodeError as e:
                 print(f"Error: {e}")
+            else:
+                print("start writing")
                 with open("google_storage.json", "w") as json_file:
                     json.dump(json_data, json_file, indent=None)
 
