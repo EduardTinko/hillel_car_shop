@@ -22,7 +22,8 @@
                         {% if is_authenticated %}
                             {% if user.is_staff == True %}
                                 <div style="display: flex; flex-wrap: wrap;">
-                                    <button style="margin-right: 10px" class="btn btn-danger d-block ms-auto" type="submit" name="delete"
+                                    <button style="margin-right: 10px" class="btn btn-danger d-block ms-auto"
+                                            type="submit" name="delete"
                                             value="{{ dealership.pk }}">
                                         Видалити
                                     </button>
@@ -35,7 +36,6 @@
                         {% endif %}
                     {% endwith %}
                 </div>
-                </p>
             </div>
         {% endfor %}
     </form>
