@@ -6,4 +6,4 @@ web: gunicorn core.wsgi
 # https://devcenter.heroku.com/articles/release-phase
 echo ${GOOGLE_CREDENTIALS} > /app/google-credentials.json
 
-release: ./manage.py migrate --no-input && ./manage.py fake_date
+release: ./manage.py migrate --no-input && ./manage.py fake_date && python create_google_storage_file.py
