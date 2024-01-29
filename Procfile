@@ -5,6 +5,4 @@ web: gunicorn core.wsgi
 # https://docs.djangoproject.com/en/4.2/topics/migrations/
 # https://devcenter.heroku.com/articles/release-phase
 
-echo ${GOOGLE_CREDENTIALS} > /app/google_storage.json
-
 release: ./manage.py migrate --no-input && ./manage.py fake_date
