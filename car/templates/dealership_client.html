@@ -1,46 +1,42 @@
-{% extends "base.html" %}
+{% extends "base_car_header.html" %}
 {% load bootstrap5 %}
+
 
 {% block title %}
     dealerships
 {% endblock %}
 
-{% block register %}
+{% block main %}
     <form action="" method="post">
-        <div class="text-center">
-            {% csrf_token %}
-            <h2>Оберіть дилерський цетр</h2>
-            <p></p>
-            <p>
-                <label for="dealership">
-                    <select name="dealership" id="dealership">
-                        {% for dealership in dealerships %}
-                            <option class="btn btn-secondary dropdown-toggle"
-                                    value="{{ dealership.id }}">{{ dealership.name }}</option>
-                        {% endfor %}
-                    </select>
-                </label>
-            </p>
-            <p style="margin: 10px">
-                <input class="btn btn-primary" type="submit" name="view_cars" value="Переглянути автомобілі дилера">
-            </p>
-            {% with is_authenticated=user.is_authenticated %}
-                {% if is_authenticated %}
-                    <h3>Користувач: {{ user.username }}</h3>
-                    <a href="{% url 'account_logout' %}">
-                        <button type="button" class="btn btn-primary my-2">Вийти з акаунта</button>
-                    </a>
-                {% else %}
-                    <h3>Анонімний користувач</h3>
-                    <p><a href="{% url 'account_login' %}">
-                        <button type="button" class="btn btn-primary my-1">Увійти</button>
-                    </a></p>
-
-                    <a href="{% url 'account_signup' %}">
-                        <button type="button" class="btn btn-primary my-1">Створити Акаунт</button>
-                    </a>
-                {% endif %}
-            {% endwith %}
-        </div>
+        {% csrf_token %}
+        <h2 style="margin-top: 20px">Оберіть дилерський центр!</h2>
+        {% for dealership in dealerships %}
+            <div style=" margin: 2%; width: 80%; text-align: center">
+                <p>
+                    <button style="padding: 15px; width: 100%; border-radius: 30px; background-color: chocolate; font-size: 30px;"
+                            type="submit" name="view_cars" value="{{ dealership.pk }}">
+                        {{ dealership.name }}
+                    </button>
+                <div style="display: flex; justify-content: end;">
+                    {% with is_authenticated=user.is_authenticated %}
+                        {% if is_authenticated %}
+                            {% if user.is_staff == True %}
+                                <div style="display: flex; flex-wrap: wrap;">
+                                    <button style="margin-right: 10px" class="btn btn-danger d-block ms-auto" type="submit" name="delete"
+                                            value="{{ dealership.pk }}">
+                                        Видалити
+                                    </button>
+                                    <button class="btn btn-danger d-block ms-auto" type="submit" name="edit"
+                                            value="{{ dealership.pk }}">
+                                        Редагувати
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                </p>
+            </div>
+        {% endfor %}
     </form>
 {% endblock %}

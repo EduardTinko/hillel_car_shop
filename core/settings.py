@@ -92,6 +92,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "core.urls"
 
+
+data = os.getenv("GOOGLE_STORAGE_KEYS")
+
+if data:
+    json_data = json.loads(data)
+    with open("google_storage.json", "w") as json_file:
+        json.dump(json_data, json_file, indent=None)
+
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -175,16 +184,16 @@ STATIC_URL = "static/"
 GS_BUCKET_NAME = "car_shop"
 
 STORAGES = {
-    # Enable WhiteNoise's GZip and Brotli compression of static assets:
+    # Enable WhiteNoise's GZip and Brotli compression of static static:
     # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
     "default": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
         "OPTIONS": {
             "bucket_name": GS_BUCKET_NAME,
         },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
@@ -197,7 +206,7 @@ WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "/dealership/"
+LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/signup/"
 LOGIN_URL = "/accounts/login/"
 
@@ -248,7 +257,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-    ]
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
 }
 
 MONOBANK_TOKEN = os.getenv("MONOBANK_TOKEN")

@@ -1,0 +1,47 @@
+{% extends "base_car.html" %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block header_center %}
+    <p style="font-weight: bold; font-family: Georgia, sans-serif;">CAR SHOP</p>
+    {% if dealership %}
+        <p style="font-size: 1rem">Дилерський центр: {{ dealership.name }}</p>
+    {% endif %}
+{% endblock %}
+
+{% block header_left %}
+    {% with is_authenticated=user.is_authenticated %}
+        {% if is_authenticated %}
+            <div style="justify-content: center; display: flex; flex-wrap: wrap;">
+                <div>
+                    <a style='width: 100%; justify-content: center; display: flex' href="{% url 'order_finish' user_id=user.id %}">
+                        <div class="icon">
+                            <img style="width:65px; height:65px; border-radius: 180px;"
+                                 src='{% static 'avatar_icon.png' %}' alt="Avatar"/>
+                        </div>
+                    </a>
+                    <span style="font-size: 1rem;">{{ user }}</span>
+                </div>
+                <div>
+                    <a style='width: 100%; justify-content: center; display: flex' href="{% url 'account_logout' %}">
+                        <button class="icon" type="button">
+                            <img style="width:65px; height:65px; border-radius: 180px;"
+                                 src='{% static 'logout_icon.jpg' %}' alt="Logout"/>
+                        </button>
+                    </a>
+                    <span style="font-size: 1rem;">Logout</span>
+                </div>
+            </div>
+        {% else %}
+            <div style="justify-content: center; display: flex; flex-wrap: wrap;">
+                <a style='width: 100%; justify-content: center; display: flex' href="{% url 'account_login' %}">
+                    <button class="icon" type="button">
+                        <img style="width:65px; height:65px; border-radius: 180px;"
+                             src='{% static 'avatar_icon.png' %}' alt="Login"/>
+                    </button>
+                </a>
+                <span style="font-size: 1rem;">Login</span>
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

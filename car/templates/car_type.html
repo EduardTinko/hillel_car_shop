@@ -1,0 +1,46 @@
+{% extends "base_car_header.html" %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block title %}
+    Car_types
+{% endblock %}
+
+
+<body>
+
+{% block header_right %}
+    <div>
+        <div style='width: 100%; justify-content: center; display: flex'>
+            <a href="{% url 'dealership_client' %}">
+                <button class="icon" type="button">
+                    <img style="width:65px; height:65px; border-radius: 180px;"
+                         src='{% static 'home_icon.png' %}' alt="Home"/>
+                </button>
+            </a>
+        </div>
+        <span style="font-size: 1rem;">Dealerships</span>
+    </div>
+{% endblock %}
+
+
+{% block main %}
+    {% for car_type in car_types %}
+        <div style="padding: 20px; margin: 2%; min-height: 250px; background-color: chocolate; width: 400px;">
+            <h2>Brand: {{ car_type.brand }}</h2>
+            <h2>Model: {{ car_type.model }}</h2>
+            <h2>Price: {{ car_type.price }}$</h2>
+            <p>
+                <button style="margin: 5px" class="btn btn-success d-block ms-auto" type="submit" name="edit"
+                        value="{{ car_type.id }}">
+                    Редагувати
+                </button>
+                <button style="margin: 5px" class="btn btn-danger d-block ms-auto" type="submit" name="delete"
+                        value="{{ car_type.id }}">
+                    Видалити
+                </button>
+            </p>
+        </div>
+    {% endfor %}
+{% endblock %}
+</body>

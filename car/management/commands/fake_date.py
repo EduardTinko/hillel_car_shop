@@ -1,3 +1,4 @@
+import os
 import random
 
 from django.contrib.auth.models import User
@@ -43,6 +44,12 @@ class Command(BaseCommand):
         Licence.objects.all().delete()
         OrderQuantity.objects.all().delete()
         Order.objects.all().delete()
+
+        password = os.getenv("DJANGO_ADMIN_PASSWORD", "admin")
+
+        User.objects.create_user(
+            username="admin", email="admin@admin.com", password=password, is_staff=True
+        )
 
         for item in car_brands_and_models:
             random_price = random.randint(10000, 50000)

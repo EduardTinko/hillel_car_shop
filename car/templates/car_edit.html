@@ -1,14 +1,31 @@
-{% extends "base.html" %}
+{% extends "base_car_header.html" %}
 {% load bootstrap5 %}
+{% load static %}
 
 {% block title %}
     EditCar
 {% endblock %}
+{% block header_right %}
+    <div>
+        <div style='width: 100%; justify-content: center; display: flex'>
+            <a href="{% url 'dealership_client' %}">
+                <button class="icon" type="button">
+                    <img style="width:65px; height:65px; border-radius: 180px;"
+                         src='{% static 'home_icon.png' %}' alt="Home"/>
+                </button>
+            </a>
+        </div>
+        <span style="font-size: 1rem;">Dealerships</span>
+    </div>
+{% endblock %}
+{% block main %}
+    <form method="post" enctype="multipart/form-data" action="">
+        {% csrf_token %}
+        <div style="margin: 5%">
+            {{ form.as_p }}
+            <p>{{ massage }}</p>
+            <button type="submit" class="btn btn-primary my-1">Зберегти зміни</button>
+        </div>
 
-{% block register %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary my-1">Зберегти зміни</button>
-</form>
+    </form>
 {% endblock %}

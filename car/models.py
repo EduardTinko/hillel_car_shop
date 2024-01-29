@@ -8,7 +8,7 @@ class CarType(models.Model):
     price = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.brand} "
+        return f"{self.brand} {self.model} price: {self.price}$"
 
 
 class Car(models.Model):
