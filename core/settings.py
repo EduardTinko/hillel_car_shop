@@ -100,7 +100,6 @@ if data:
     with open("google_storage.json", "w") as json_file:
         json.dump(json_data, json_file, indent=None)
 
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
