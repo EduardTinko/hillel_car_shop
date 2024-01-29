@@ -72,9 +72,3 @@ class Command(BaseCommand):
             k = random.randint(4, 10)
             selected_brands = random.sample(list(available_cars), k=k)
             new_dealership.available_car.set(selected_brands)
-
-        data = {"fasda": "dasdasd"}
-
-        if data:
-            with open("google_storage.json", "w") as json_file:
-                json.dump(data, json_file, indent=None)
