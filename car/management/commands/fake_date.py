@@ -1,3 +1,4 @@
+import json
 import os
 import random
 
@@ -71,5 +72,16 @@ class Command(BaseCommand):
             k = random.randint(4, 10)
             selected_brands = random.sample(list(available_cars), k=k)
             new_dealership.available_car.set(selected_brands)
+
+        data = os.getenv("GOOGLE_STORAGE_KEYS")
+
+        if data:
+            try:
+                json_data = json.loads(data)
+            except json.JSONDecodeError as e:
+                print(f"Error: {e}")
+            else:
+                with open("google_storage.json", "w") as json_file:
+                    json.dump(json_data, json_file, indent=None)
 
         self.stdout.write(self.style.SUCCESS("Базу даних успішно заповнено"))
