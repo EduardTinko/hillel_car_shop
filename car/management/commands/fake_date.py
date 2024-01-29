@@ -76,13 +76,5 @@ class Command(BaseCommand):
         data = os.getenv("GOOGLE_STORAGE_KEYS")
 
         if data:
-            try:
-                json_data = json.loads(data)
-            except json.JSONDecodeError as e:
-                print(f"Error: {e}")
-            else:
-                print("start writing")
-                with open("google_storage.json", "w") as json_file:
-                    json.dump(json_data, json_file, indent=None)
-
-        self.stdout.write(self.style.SUCCESS("Базу даних успішно заповнено"))
+            with open("google_storage.json", "w") as json_file:
+                json.dump(data, json_file, indent=None)
