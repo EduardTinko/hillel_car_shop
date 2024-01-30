@@ -48,6 +48,7 @@ def verify_signature(request):
 
 
 def create_invoice(order: Order, webhook_url):
+    print(webhook_url)
     basket_order = []
     for order_quantity in order.car_types.all():
         sum_ = order_quantity.car_type.price * order_quantity.quantity

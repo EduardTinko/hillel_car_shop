@@ -1,3 +1,4 @@
+import rest_framework.reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Sum
@@ -5,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from faker import Faker
-import rest_framework.reverse
+from rest_framework.response import Response
 
 from .forms import DealershipForm, CarForm, CarTypeForm
 from .invoice import create_invoice
@@ -241,13 +242,7 @@ def order_cart(request, order_id):
             create_invoice(
                 order, rest_framework.reverse.reverse("webhook-mono", request=request)
             )
-            context = {
-                "order": order,
-                "cars_in_order": cars_in_order,
-                "total_price": total_price,
-                "url": order.invoice_url,
-            }
-            return render(request, "order_cart.html", context)
+            return Response({"invoice_url": order.invoice_url})
         else:
             return render(request, "order_cart.html", context)
 
