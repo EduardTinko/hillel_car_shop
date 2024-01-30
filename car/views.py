@@ -224,6 +224,7 @@ def add_car_in_order(ad_car_id, order):
 
 @login_required
 def order_cart(request, order_id):
+    user = request.user
     order = Order.objects.get(id=order_id)
     cars_in_order = Car.objects.filter(blocked_by_order__id=order.id)
     total_price = (
@@ -241,7 +242,12 @@ def order_cart(request, order_id):
         if total_price != 0:
             order.total = total_price
             create_invoice(
-                order, rest_framework.reverse.reverse("webhook-mono", request=request)
+                order,
+                redirect=f"/order_finish/user_id={user.id}/",
+                webhook_url=rest_framework.reverse.reverse(
+                    "webhook-mono", request=request
+                ),
+                request=request,
             )
             return redirect(f"{order.invoice_url}")
         else:
