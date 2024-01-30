@@ -226,7 +226,7 @@ def order_cart(request, order_id):
     order = Order.objects.get(id=order_id)
     cars_in_order = Car.objects.filter(blocked_by_order__id=order.id)
     total_price = (
-            cars_in_order.aggregate(Sum("car_type__price"))["car_type__price__sum"] or 0
+        cars_in_order.aggregate(Sum("car_type__price"))["car_type__price__sum"] or 0
     )
     context = {
         "order": order,
@@ -238,7 +238,9 @@ def order_cart(request, order_id):
 
     if "pay_order" in request.POST:
         if total_price != 0:
-            create_invoice(order, rest_framework.reverse.reverse("webhook-mono", request=request))
+            create_invoice(
+                order, rest_framework.reverse.reverse("webhook-mono", request=request)
+            )
             context = {
                 "order": order,
                 "cars_in_order": cars_in_order,
