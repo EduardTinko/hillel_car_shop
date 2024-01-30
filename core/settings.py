@@ -17,7 +17,6 @@ import sys
 from pathlib import Path
 
 import dj_database_url
-from google.cloud import storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -255,10 +254,3 @@ REST_FRAMEWORK = {
 }
 
 MONOBANK_TOKEN = os.getenv("MONOBANK_TOKEN")
-
-
-json_str = os.getenv("GOOGLE_CREDENTIALS")
-
-credentials_dict = json.loads(json_str)
-
-storage_client = storage.Client.from_service_account_info(credentials_dict)

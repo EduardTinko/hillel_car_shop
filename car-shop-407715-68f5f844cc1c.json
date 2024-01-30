@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "car-shop-407715",
+  "private_key_id": "b96c23e483a1492cde36b03c41fb892048ee3958",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC50yNFo6mya33R\nGbnV0Piesk1l8+Y6+lDip5SFUDmYXLwQiL7xJwqbKbCVB/y/QLENN/Ig8YoDauKk\n1oWMFvTTL/WGrASZ41iyzEcziNTObq/29EbUUOVANVYCyN9bSBO5R+kZ7J6xGpA5\nxgT0TSFZUsg8Xg/XhDT7SENaoiTLTjdch1VC14HXrAufd6iXoRIE0bd7CKVVCMpw\n5mtLzaYnCCNphWvRdAn+6CsSvjAwYwnBAqBLqC+kUh/1sVufN1n49h91j7T6HkKR\nUOhOISCeV/Mrw3UPMxID7Of4wvA1m+3Ja+TcwBQktDCDxZ/nIcqXYGCUV5GHapWl\n/wzfzrwvAgMBAAECggEAGKgEdZs44I+KYwzb+hwfaQXf5t0SbuqY10IvdEhH+XNQ\nkYxmHYm1yrnLkDK+SBg1heX8TtUNytSgsbOJ286N+gRSj+XSOc255AYz6l7HsdkW\nUxkS2YgfAG0zS5egqgl/HdCwrtEVNgsAGRJbxO4DtJ5F1bC7abgamZRQj5LqeT6I\n/j3BlBg5btJZWo11KQZ6c1OgTUWlX4rbNYCgWpUyk1zlLfSAle0mX8nbyefz2XTo\nZzhpgwdy7UmfschfhMUz+BS/A5bgZ8JQ+OuDSn4EadBTsr4+8LSHFTtS2MR9bnrq\nT/LTsT/20B3P7xmO4sRyYho71nlQGkV3g2MvT7BH6QKBgQDu32Gho3Nq1aNNZSra\nPUSfvWorKiYcQ1wm/qsCb5pDRBruDWbBoONlc1DvFTK81coYvcJmBc3k6ngHvmvI\n45pWluQvOIRXibhOcMv5BqSozmqSDhK21Ls6ScE64F2JeY6nRjTAmzevwoBfDXb+\nijDSW5QvDBEtSGtEw9gKSIFPmQKBgQDHJgnhv6wSwevtM4ALQPXt6lWip1SOB2hx\nzQSm1C1OqinVK8ooaIR3M1vloIigcCY4ZP//r3AvD4sohzAaXZ8e8xoOVdNlXnVP\nK9MOQlcHX5qhOl2y8JiJVRLXev0OrqgS54fqDBI3Nh4/WiYLLGBKTyQJl3iX4pwN\nfHkEepdnBwKBgBTbGBEezkLzqDBnttgbJVS1GwHtyioJj5AwCApMaDGbTqaeMOyS\n+YewC870ENv/5odGeiSiORnVhulWLN77UExjHEUrMBLciWT/4C8770B11UQvSl8A\nL+Ck8+QKFuCb5mKgdJakdrY3yzGBYXRT6HNVX5jD+vPzMLpuRvyO3AtxAoGAGV+R\nVr/zDpjClIBBSi3Gp795lbW4IjhzaDx04USbWTB5D/36TdezOPTEOqePgNGJLRpB\nO7SAmJ5kXo+K43EWOv1CTp1Ex9+XFrVAuMpfCEN4Eh67nXbmGGlMc0PqRhqes3no\naTuMfphYlj3IJxhKVG1s7APui3uF4nn/eUCdVbUCgYEAuCECLb5akmfdzIM+SLXc\nkilryMGkMC2Wre1OJ2VwzI0o4+/SHGkMI68lOUaYBJxZYMKxvKmnFyjaXP9S7WLs\nO7ZxyK3CGNK5Fphld8bOn50mNfOti4JLhrQmml+zCRUM4CiZlY9R1X8XbzD7+xyo\nkr/tWvOUTBTeAmCpQ4HRQ0s=\n-----END PRIVATE KEY-----\n",
+  "client_email": "storage@car-shop-407715.iam.gserviceaccount.com",
+  "client_id": "105599229703827415794",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/storage%40car-shop-407715.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

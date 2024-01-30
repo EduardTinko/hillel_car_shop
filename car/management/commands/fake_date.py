@@ -3,6 +3,7 @@ import os
 import random
 
 from django.contrib.auth.models import User
+from allauth.account.models import EmailAddress
 from django.core.management.base import BaseCommand
 from faker import Faker
 
@@ -48,9 +49,14 @@ class Command(BaseCommand):
 
         password = os.getenv("DJANGO_ADMIN_PASSWORD", "admin")
 
-        User.objects.create_user(
+        user = User.objects.create_superuser(
             username="admin", email="admin@admin.com", password=password, is_staff=True
         )
+        email, _ = EmailAddress.objects.get_or_create(user=user)
+
+        email.verified = True
+        email.primary = True
+        email.save()
 
         for item in car_brands_and_models:
             random_price = random.randint(10000, 50000)
