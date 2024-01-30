@@ -38,7 +38,7 @@
             <h2>Марка авто: {{ car.car_type.brand }}</h2>
             <h2>Модель авто: {{ car.car_type.model }}</h2>
             {% if car.photo %}
-                <img src="{{ car.photo.url }}" alt="Car Photo" width="450" height="300">
+                <img src="{{ car.photo.url }}" alt="Car Photo" width="300" height="200">
             {% endif %}
             <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
             <p>Ціна: {{ car.car_type.price }}$</p>
