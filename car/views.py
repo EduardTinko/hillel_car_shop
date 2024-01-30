@@ -243,7 +243,7 @@ def order_cart(request, order_id):
                 "order": order,
                 "cars_in_order": cars_in_order,
                 "total_price": total_price,
-                "url": order.invoice_url
+                "url": order.invoice_url,
             }
             return render(request, "order_cart.html", context)
         else:
