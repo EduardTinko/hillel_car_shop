@@ -239,6 +239,7 @@ def order_cart(request, order_id):
 
     if "pay_order" in request.POST:
         if total_price != 0:
+            order.total = total_price
             create_invoice(
                 order, rest_framework.reverse.reverse("webhook-mono", request=request)
             )
