@@ -243,7 +243,7 @@ def order_cart(request, order_id):
             create_invoice(
                 order, rest_framework.reverse.reverse("webhook-mono", request=request)
             )
-            return Response({"invoice_url": order.invoice_url})
+            return redirect(f"{order.invoice_url}")
         else:
             return render(request, "order_cart.html", context)
 
