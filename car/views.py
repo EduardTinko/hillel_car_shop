@@ -243,7 +243,7 @@ def order_cart(request, order_id):
             order.total = total_price
             create_invoice(
                 order,
-                redirect=f"/order_finish/user_id={user.id}/",
+                redirect=f"order_finish/user_id={user.id}/",
                 webhook_url=rest_framework.reverse.reverse(
                     "webhook-mono", request=request
                 ),

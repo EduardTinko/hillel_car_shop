@@ -51,7 +51,13 @@ def verify_signature(request):
 
 def create_invoice(order: Order, webhook_url, redirect, request: HttpRequest):
     basket_order = []
-    redirect_url = f"{request.build_absolute_uri()}{redirect}"
+    scheme = request.scheme
+    http_host = request.META.get('HTTP_HOST', '')
+    server_port = request.META.get('SERVER_PORT', '')
+
+    base_url = f"{scheme}://{http_host}{server_port}"
+    redirect_url = f"{base_url}{redirect}"
+
     for order_quantity in order.car_types.all():
         sum_ = order_quantity.car_type.price * order_quantity.quantity
         name = f"Brand {order_quantity.car_type.brand}. Model {order_quantity.car_type.model}"
