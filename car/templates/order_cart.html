@@ -1,103 +1,61 @@
-{# Load the tag library #}
+{% extends "base_car_header.html" %}
 {% load bootstrap5 %}
+{% load static %}
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
-
-<title>
+{% block title %}
     Order:{{ order.id }}
-</title>
+{% endblock %}
 
-<style>
 
-    .client {
-        left: -15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        text-align: left;
-        background-color: bisque;
-        padding: 20px;
-        border-radius: 20px;
-    }
+<body>
 
-    .cars {
-        background-color: bisque;
-        margin-bottom: 30px;
-        padding: 20px;
-        position: relative;
-        border-radius: 20px;
-    }
+{% block header_right %}
+    <a href="{% url 'dealership_client' %}">
+        <button class="icon" type="button">
+            <img style="width:65px; height:65px; border-radius: 180px;"
+                 src='{% static 'home_icon.png' %}' alt="Home"/>
+        </button>
+    </a>
+    <button class="icon" type="submit" name="car_list">
+        <img style="width:65px; height:65px; border-radius: 180px;"
+             src='{% static 'avto_icon.png' %}' alt="Cars"/>
+    </button>
+{% endblock %}
 
-    .cart {
-        right: -15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: bisque;
-        position: relative;
-        text-align: center;
-        padding: 20px;
-        border-radius: 20px;
-    }
-</style>
-
-<body style="background: bisque">
-<form action="" method="post">
-    {% csrf_token %}
-    <div class="col-10 mx-auto my-5"
-         style="background-color: burlywood; min-height: 85vh; position: absolute; left: 50%; transform: translateX(-50%);">
-        <div class="row">
-            <div class="client col-4 my-5">
-                <h2>Деталі замовлення:</h2>
-                <p> ID замовлення: {{ order.id }} </p>
-                <p>Клієнт: {{ order.user.username }}</p>
-                <p> Дилерський центр: {{ order.dealership.name }}</p>
-            </div>
-            <div class="cart col-3 ms-auto my-5">
-                <h2>Сума замовлення: {{ total_price }}$
-                </h2>
-                <p>
-                    <button class="btn btn-primary" type="submit" name="pay_order">Сплатити замовлення</button>
-                    <button class="btn btn-primary" type="submit" name="clear_cart">Очистити кошик</button>
-                </p>
-                <button class="btn btn-primary" type="submit" name="car_list">Переглянути більше автомобілів</button>
-                <a href="{% url 'dealership_client' %}">
-                    <button class="btn btn-primary my-1" type="button">Початкова сторінка</button>
-                </a>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                {% for car in cars_in_order %}
-                    <div class="col-5 mx-auto">
-                        <div class="cars">
-                            <h2>Марка авто: {{ car.car_type.brand }}</h2>
-                            <h2>Модель авто: {{ car.car_type.model }}</h2>
-                            {% if car.photo %}
-                                <img src="{{ car.photo.url }}" alt="Car Photo" width="450" height="300">
-                            {% endif %}
-                            <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
-                            <p>Ціна: {{ car.car_type.price }}$</p>
-                            {% if car.blocked_by_order is not None %}
-                                <button class="btn btn-danger d-block ms-auto" type="submit" name="delete_car"
-                                        value="{{ car.id }}">
-                                    Видалити з кошику
-                                </button>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+{% block main %}
+    <div style="width: 100%; display: flex; justify-content: center; text-align: center">
+        <div style="width: 50%;">
+            <h2>Деталі замовлення:</h2>
+            <p> ID замовлення: {{ order.id }} </p>
+            <p>Клієнт: {{ order.user.username }}</p>
+            <p> Дилерський центр: {{ order.dealership.name }}</p>
+            <h2>Сума замовлення: {{ total_price }}₴</h2>
         </div>
     </div>
-</form>
+
+    {% for car in cars_in_order %}
+        <div style="padding: 20px; margin: 2%; min-height: 250px; background-color: chocolate; width: 400px;">
+            <h2>Марка авто: {{ car.car_type.brand }}</h2>
+            <h2>Модель авто: {{ car.car_type.model }}</h2>
+            {% if car.photo %}
+                <img src="{{ car.photo.url }}" alt="Car Photo" width="300" height="200">
+            {% endif %}
+            <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
+            <p>Ціна: {{ car.car_type.price }}₴</p>
+            {% if car.blocked_by_order is not None %}
+                <button class="btn btn-danger d-block ms-auto" type="submit" name="delete_car"
+                        value="{{ car.id }}">
+                    Видалити з кошику
+                </button>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <div style="width: 100%; display: flex; justify-content: center; text-align: center">
+        <div style="width: 50%">
+            <p><button class="btn btn-primary" type="submit" name="pay_order">Сплатити замовлення</button></p>
+            <p><button class="btn btn-primary" type="submit" name="clear_cart">Очистити кошик</button></p>
+        </div>
+    </div>
+
+{% endblock %}
 </body>

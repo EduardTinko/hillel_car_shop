@@ -37,6 +37,11 @@ class CarTypeForm(forms.ModelForm):
 
 
 class CarForm(forms.ModelForm):
+    car_type = forms.ModelChoiceField(queryset=CarType.objects.all())
+    dealerships = forms.ModelMultipleChoiceField(
+        queryset=Dealership.objects.all(), widget=forms.CheckboxSelectMultiple
+    )
+
     class Meta:
         model = Car
         fields = ["car_type", "color", "year", "photo"]
@@ -47,9 +52,10 @@ class LicenceForm(forms.Form):
     fields = ["car", "number"]
 
 
-class DealershipForm(forms.Form):
-    model = Dealership
-    fields = ["name", "available_car_type", "users"]
+class DealershipForm(forms.ModelForm):
+    class Meta:
+        model = Dealership
+        fields = ["name"]
 
 
 class OrderForm(forms.Form):

@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+
 import json
 import os
 import secrets
@@ -92,6 +93,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "core.urls"
 
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -114,7 +116,6 @@ ACCOUNT_FORMS = {
 }
 
 WSGI_APPLICATION = "core.wsgi.application"
-
 
 if IS_HEROKU_APP:
     DATABASES = {
@@ -175,16 +176,16 @@ STATIC_URL = "static/"
 GS_BUCKET_NAME = "car_shop"
 
 STORAGES = {
-    # Enable WhiteNoise's GZip and Brotli compression of static assets:
+    # Enable WhiteNoise's GZip and Brotli compression of static static:
     # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
     "default": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
         "OPTIONS": {
             "bucket_name": GS_BUCKET_NAME,
         },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
@@ -197,7 +198,7 @@ WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "/dealership/"
+LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/signup/"
 LOGIN_URL = "/accounts/login/"
 
@@ -248,7 +249,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-    ]
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
 }
 
 MONOBANK_TOKEN = os.getenv("MONOBANK_TOKEN")

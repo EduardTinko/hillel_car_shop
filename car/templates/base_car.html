@@ -1,0 +1,126 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<style>
+    .icon {
+        margin: 10px;
+        width: 65px;
+        height: 65px;
+        border-radius: 180px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: solid black
+    }
+
+    .form {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    .header {
+        position: fixed;
+        background-color: burlywood;
+        width: 100%;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .admin_panel {
+        background-color: saddlebrown;
+        width: 100%;
+        height: 70px;
+        display: flex;
+        justify-content: end;
+        bottom: 0;
+    }
+
+    .main {
+        display: flex;
+        min-height: 100vh;
+        background-color: bisque;
+        width: 100%;
+        margin: auto;
+        justify-content: center;
+    }
+
+    .header_box {
+        font-size: 3vh;
+        padding: 0.15%;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-grow: 1;
+        margin: 0.75%;
+        flex-wrap: nowrap;
+    }
+
+    .main_flex_grid {
+        width: 80%;
+        align-content: flex-start;
+        justify-content: center;
+        margin: 175px 5% 0 5%;
+        display: flex;
+        background-color: burlywood;
+        flex-wrap: wrap;
+
+    }
+</style>
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body style="width: 100%; height: 100%; margin: 0; padding: 0;">
+<form method="post" enctype="multipart/form-data" action="">
+    {% csrf_token %}
+    <div class="form">
+        <div class="header">
+            <div class="header_box" style="flex-grow: 1; width: 30%; display: flex">
+                {% block header_left %}{% endblock %}</div>
+            <div class="header_box" style="flex-grow: 3; width: 40%">{% block header_center %}{% endblock %}</div>
+            <div class="header_box" style="flex-grow: 1; width: 30%; display: flex">
+                {% block header_right %}{% endblock %}</div>
+        </div>
+        <div class="main">
+            <div class="main_flex_grid">{% block main %}{% endblock %}</div>
+        </div>
+        {% with is_authenticated=user.is_authenticated %}
+            {% if is_authenticated %}
+                {% if user.is_staff == True %}
+                    <div class="admin_panel">
+                        <a style="margin-top: 15px; margin-right: 5%" href="{% url 'create_car' %}">
+                            <button class="btn btn-danger d-block ms-auto" type="button">
+                                Додати автомобіль
+                            </button>
+                        </a>
+                        <a style="margin-top: 15px; margin-right: 5%" href="{% url 'create_dealership' %}">
+                            <button class="btn btn-danger d-block ms-auto" type="button">
+                                Додати дилерський центр
+                            </button>
+                        </a>
+                        <a style="margin-top: 15px; margin-right: 5%" href="{% url 'create_car_type' %}">
+                            <button class="btn btn-danger d-block ms-auto" type="button">
+                                Додати новий тип автомобіля
+                            </button>
+                        </a>
+                        <a style="margin-top: 15px; margin-right: 5%" href="{% url 'list_car_type' %}">
+                            <button class="btn btn-danger d-block ms-auto" type="button">
+                                Список типів автомобіля
+                            </button>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</form>
+</body>
+

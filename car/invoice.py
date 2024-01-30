@@ -3,6 +3,8 @@ import requests
 import base64
 import hashlib
 
+from django.http import HttpRequest
+
 from car.models import Order, MonoSettings
 from core import settings
 
@@ -47,10 +49,16 @@ def verify_signature(request):
         raise Exception("Signature is not valid")
 
 
-def create_invoice(order: Order, webhook_url):
+def create_invoice(order: Order, webhook_url, redirect, request: HttpRequest):
     basket_order = []
+    scheme = request.scheme
+    http_host = request.META.get("HTTP_HOST", "")
+
+    base_url = f"{scheme}://{http_host}"
+    redirect_url = f"{base_url}{redirect}"
+
     for order_quantity in order.car_types.all():
-        sum_ = order_quantity.car_type.price * order_quantity.quantity
+        sum_ = order_quantity.car_type.price * 100 * order_quantity.quantity
         name = f"Brand {order_quantity.car_type.brand}. Model {order_quantity.car_type.model}"
         basket_order.append(
             {
@@ -66,8 +74,9 @@ def create_invoice(order: Order, webhook_url):
         "basketOrder": basket_order,
     }
     request_body = {
+        "redirectUrl": redirect_url,
         "webHookUrl": webhook_url,
-        "amount": order.total,
+        "amount": order.total * 100,
         "merchantPaymInfo": merchants_info,
     }
     headers = {"X-Token": settings.MONOBANK_TOKEN}

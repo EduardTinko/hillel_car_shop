@@ -12,7 +12,7 @@
     {% url 'account_login' as login_url %}
     {% element form form=form method="post" action=login_url tags="entrance,login" %}
         {% slot body %}
-            <div style="text-align: right">
+            <div style="display: inline-block; text-align: right;">
                 {% csrf_token %}
                 {% element fields form=form unlabeled=True %}
                 {% endelement %}
@@ -24,9 +24,15 @@
             </div>
         {% endslot %}
         {% slot actions %}
-            <button class="btn btn-primary">
-                {% trans "Увійти" %}
-            </button>
+            <p>
+                <button class="btn btn-primary">
+                    {% trans "Увійти" %}
+                </button>
+            </p>
+            <p>
+                <a href="{% url 'account_signup' %}" class="btn btn-primary"
+                   role="button">{% trans "Зареєструватися" %}</a>
+            </p>
         {% endslot %}
     {% endelement %}
     {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}

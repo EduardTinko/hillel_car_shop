@@ -1,6 +1,9 @@
+import json
+import os
 import random
 
 from django.contrib.auth.models import User
+from allauth.account.models import EmailAddress
 from django.core.management.base import BaseCommand
 from faker import Faker
 
@@ -44,6 +47,17 @@ class Command(BaseCommand):
         OrderQuantity.objects.all().delete()
         Order.objects.all().delete()
 
+        password = os.getenv("DJANGO_ADMIN_PASSWORD", "admin")
+
+        user = User.objects.create_superuser(
+            username="admin", email="admin@admin.com", password=password, is_staff=True
+        )
+        email, _ = EmailAddress.objects.get_or_create(user=user)
+
+        email.verified = True
+        email.primary = True
+        email.save()
+
         for item in car_brands_and_models:
             random_price = random.randint(10000, 50000)
 
@@ -64,5 +78,3 @@ class Command(BaseCommand):
             k = random.randint(4, 10)
             selected_brands = random.sample(list(available_cars), k=k)
             new_dealership.available_car.set(selected_brands)
-
-        self.stdout.write(self.style.SUCCESS("Базу даних успішно заповнено"))

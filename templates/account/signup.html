@@ -13,7 +13,7 @@
     {% url 'account_signup' as action_url %}
     {% element form form=form method="post" action=action_url tags="entrance,signup" %}
         {% slot body %}
-            <div style="text-align: right">
+            <div style="display: inline-block; text-align: right;">
                 {% csrf_token %}
                 {% element fields form=form unlabeled=True %}
                 {% endelement %}
@@ -25,9 +25,9 @@
             </div>
         {% endslot %}
         {% slot actions %}
-            <button class="btn btn-primary">
+            <p><button class="btn btn-primary">
                 {% trans "Зареєструватися" %}
-            </button>
+            </button></p>
         {% endslot %}
     {% endelement %}
     {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
