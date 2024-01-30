@@ -145,7 +145,10 @@ class ConfirmOrderAPIView(APIView):
         order = self._get_order(order_id=order_id)
         self.check_object_permissions(request, order)
         create_invoice(
-            order, rest_framework.reverse.reverse("webhook-mono", request=request)
+            order,
+            redirect=f"/api/",
+            webhook_url=rest_framework.reverse.reverse("webhook-mono", request=request),
+            request=request,
         )
         return Response({"invoice_url": order.invoice_url})
 
