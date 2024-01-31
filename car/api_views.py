@@ -18,7 +18,8 @@ from .serializers import (
     CarSerializer,
     OrderSerializer,
     UserSerializer,
-    InfoAddCarSerializer, DealershipSerializerName,
+    InfoAddCarSerializer,
+    DealershipSerializerName,
 )
 from .views import generate_license
 
@@ -28,7 +29,7 @@ class DealershipViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DealershipSerializerName
     http_method_names = ["get"]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['name']
+    filterset_fields = ["name"]
 
 
 class CarViewSet(viewsets.ReadOnlyModelViewSet):
@@ -36,7 +37,7 @@ class CarViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CarSerializer
     http_method_names = ["get"]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['car_type__brand', "car_type__model"]
+    filterset_fields = ["car_type__brand", "car_type__model"]
     ordering_fields = ["car_type__price", "year"]
 
 
@@ -108,7 +109,9 @@ class AddCarAPIView(APIView):
         serialized_order = InfoAddCarSerializer(
             {
                 "message": f"Car {added_car.pk} added in order {order.id}",
-                "url": request.build_absolute_uri(reverse('order_confirm', kwargs={'order_id': order.id})),
+                "url": request.build_absolute_uri(
+                    reverse("order_confirm", kwargs={"order_id": order.id})
+                ),
             }
         )
         return Response(serialized_order.data, status=status.HTTP_200_OK)

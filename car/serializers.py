@@ -26,7 +26,6 @@ class LicenceSerializer(serializers.ModelSerializer):
 
 
 class DealershipSerializerName(serializers.ModelSerializer):
-
     class Meta:
         model = Dealership
         fields = ["id", "name"]

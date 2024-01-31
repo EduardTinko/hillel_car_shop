@@ -68,8 +68,12 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path("api/", DocsView.as_view(), name="docs-view"),
-    path("api/order/confirm/<int:order_id>/", api_views.ConfirmOrderAPIView.as_view(), name="order_confirm"),
+    path("api/", DocsView.as_view(), name="api"),
+    path(
+        "api/order/confirm/<int:order_id>/",
+        api_views.ConfirmOrderAPIView.as_view(),
+        name="order_confirm",
+    ),
     path(
         "api/dealership/<int:dealer_id>/add_car/",
         api_views.AddCarAPIView.as_view(http_method_names="get"),
