@@ -25,12 +25,11 @@ class LicenceSerializer(serializers.ModelSerializer):
         fields = ["car", "number"]
 
 
-class DealershipSerializer(serializers.ModelSerializer):
-    available_car = CarSerializer(many=True)
+class DealershipSerializerName(serializers.ModelSerializer):
 
     class Meta:
         model = Dealership
-        fields = ["id", "name", "available_car"]
+        fields = ["id", "name"]
 
 
 class OrderQuantitySerializer(serializers.ModelSerializer):
