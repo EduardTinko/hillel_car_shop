@@ -1,6 +1,7 @@
 {% extends "base_car_header.html" %}
 {% load bootstrap5 %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
     Dealership:{{ order.dealership.name }}
@@ -47,7 +48,7 @@
                 <img src="{{ car.photo.url }}" alt="Car Photo" width="300" height="200">
             {% endif %}
             <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
-            <p>Ціна: {{ car.car_type.price }}₴</p>
+            <p>Ціна: {{ car.car_type.price|intcomma }}₴</p>
             {% with is_authenticated=user.is_authenticated %}
                 {% if is_authenticated %}
                     {% if user.is_staff == True %}

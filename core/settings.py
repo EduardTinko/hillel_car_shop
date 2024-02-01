@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "django_filters",
+    "django.contrib.humanize",
     # ... include the providers you want to enable:
     "allauth",
     "allauth.account",
@@ -203,8 +204,6 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/signup/"
 LOGIN_URL = "/accounts/login/"
 
-# Email settings
-YOUR_API_KEY = os.getenv("YOUR_API_KEY")
 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

@@ -1,6 +1,7 @@
 {% extends "base_car_header.html" %}
 {% load bootstrap5 %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
     Order:{{ order.id }}
@@ -29,7 +30,7 @@
             <p> ID замовлення: {{ order.id }} </p>
             <p>Клієнт: {{ order.user.username }}</p>
             <p> Дилерський центр: {{ order.dealership.name }}</p>
-            <h2>Сума замовлення: {{ total_price }}₴</h2>
+            <h2>Сума замовлення: {{ total_price|intcomma }}₴</h2>
         </div>
     </div>
 
@@ -41,7 +42,7 @@
                 <img src="{{ car.photo.url }}" alt="Car Photo" width="300" height="200">
             {% endif %}
             <p>Колір: {{ car.color }} Рік випуску: {{ car.year }}</p>
-            <p>Ціна: {{ car.car_type.price }}₴</p>
+            <p>Ціна: {{ car.car_type.price|intcomma }}₴</p>
             {% if car.blocked_by_order is not None %}
                 <button class="btn btn-danger d-block ms-auto" type="submit" name="delete_car"
                         value="{{ car.id }}">
