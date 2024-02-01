@@ -25,12 +25,9 @@ class DocsView(APIView):
     @staticmethod
     def get(request, *args, **kwargs):
         apidocs = {
-            "register": request.build_absolute_uri("api/register"),
-            "dealership": request.build_absolute_uri("api/dealership"),
-            "car": request.build_absolute_uri("api/car"),
-            "add_car_list": request.build_absolute_uri("api/dealership/*/add_car/"),
-            "add_car": request.build_absolute_uri("api/dealership/*/add_car/*/"),
-            "confirm": request.build_absolute_uri("api/order/confirm/*/"),
+            "register": request.build_absolute_uri("register"),
+            "dealership": request.build_absolute_uri("dealership"),
+            "car": request.build_absolute_uri("car"),
         }
         return Response(apidocs)
 
@@ -71,8 +68,12 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path("api/", DocsView.as_view(), name="docs-view"),
-    path("api/order/confirm/<int:order_id>/", api_views.ConfirmOrderAPIView.as_view()),
+    path("api/", DocsView.as_view(), name="api"),
+    path(
+        "api/order/confirm/<int:order_id>/",
+        api_views.ConfirmOrderAPIView.as_view(),
+        name="order_confirm",
+    ),
     path(
         "api/dealership/<int:dealer_id>/add_car/",
         api_views.AddCarAPIView.as_view(http_method_names="get"),

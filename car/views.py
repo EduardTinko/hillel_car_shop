@@ -170,9 +170,7 @@ def create_car_type(request):
     form = CarTypeForm(request.POST)
     if form.is_valid():
         form.save()
-        return render(
-            request, "car_edit.html", {"form": form, "massage": "Зміни збережено"}
-        )
+        return redirect(reverse("list_car_type"))
     return render(request, "car_edit.html", {"form": form})
 
 
@@ -186,11 +184,7 @@ def create_dealership(request):
     form = DealershipForm(request.POST)
     if form.is_valid():
         form.save()
-        return render(
-            request,
-            "car_edit.html",
-            {"form": form, "massage": "Додано дилерський центр"},
-        )
+        return redirect(reverse("dealership_client"))
     return render(request, "car_edit.html", {"form": form})
 
 

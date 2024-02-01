@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "django_filters",
+    "django.contrib.humanize",
     # ... include the providers you want to enable:
     "allauth",
     "allauth.account",
@@ -202,8 +204,6 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/signup/"
 LOGIN_URL = "/accounts/login/"
 
-# Email settings
-YOUR_API_KEY = os.getenv("YOUR_API_KEY")
 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -251,6 +251,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 100,
 }
 
 MONOBANK_TOKEN = os.getenv("MONOBANK_TOKEN")

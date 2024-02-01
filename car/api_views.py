@@ -1,9 +1,12 @@
-from django.contrib.auth.models import User
 import rest_framework.reverse
+from django.contrib.auth.models import User
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status, mixins
 from rest_framework.exceptions import NotFound
+from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,25 +15,30 @@ from .invoice import create_invoice, verify_signature
 from .models import Car, Dealership, Order, OrderQuantity
 from .permissions import IsOwner
 from .serializers import (
-    DealershipSerializer,
     CarSerializer,
     OrderSerializer,
     UserSerializer,
     InfoAddCarSerializer,
+    DealershipSerializerName,
 )
 from .views import generate_license
 
 
 class DealershipViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Dealership.objects.all()
-    serializer_class = DealershipSerializer
+    serializer_class = DealershipSerializerName
     http_method_names = ["get"]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 class CarViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     http_method_names = ["get"]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ["car_type__brand", "car_type__model"]
+    ordering_fields = ["car_type__price", "year"]
 
 
 class UserRegisterViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
@@ -97,10 +105,13 @@ class AddCarAPIView(APIView):
         )
         order.car_types.add(order_quantity)
         order.save()
+
         serialized_order = InfoAddCarSerializer(
             {
                 "message": f"Car {added_car.pk} added in order {order.id}",
-                "url": f"/api/order/confirm/{order.id}/",
+                "url": request.build_absolute_uri(
+                    reverse("order_confirm", kwargs={"order_id": order.id})
+                ),
             }
         )
         return Response(serialized_order.data, status=status.HTTP_200_OK)

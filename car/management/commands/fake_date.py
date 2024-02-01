@@ -1,9 +1,7 @@
-import json
-import os
 import random
+import os
 
 from django.contrib.auth.models import User
-from allauth.account.models import EmailAddress
 from django.core.management.base import BaseCommand
 from faker import Faker
 
@@ -11,29 +9,23 @@ from ...models import Car, CarType, Dealership, Licence, Order, OrderQuantity
 
 fake = Faker("uk_UA")
 
-car_brands_and_models = [
-    ["Toyota", "Camry"],
-    ["Toyota", "Corolla"],
-    ["Toyota", "Rav4"],
-    ["Honda", "Civic"],
-    ["Honda", "Accord"],
-    ["Honda", "CR-V"],
-    ["Ford", "Fusion"],
-    ["Ford", "Focus"],
-    ["Ford", "Escape"],
-    ["Chevrolet", "Malibu"],
-    ["Chevrolet", "Cruze"],
-    ["Chevrolet", "Equinox"],
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_application_credentials.json"
+
+cars = [
+    ["Volkswagen", "Touareg", 2500000, 2024, "car/static/VWTouareg.png"],
+    ["Volkswagen", "Arteon", 1800000, 2023, "car/static/VWArteon.png"],
+    ["Volkswagen", "Golf GTI", 1650000, 2022, "car/static/VWGolfGTI.png"],
+    ["Volkswagen", "Tiguan", 1600000, 2022, "car/static/VWTiguan.png"],
+    ["Ford", "Ranger", 1950000, 2024, "car/static/fordranger.png"],
+    ["Ford", "Puma", 1500000, 2021, "car/static/fordpuma.png"],
+    ["Ford", "Focus", 1700000, 2022, "car/static/fordfocus.png"],
 ]
 
-color = ["Red", "Green", "Blue", "Yellow", "Orange", "Purple", "Pink", "Black", "White"]
+color = ["Red", "Silver", "Blue", "Yellow", "Black", "White"]
 
 dealer_ship_names = [
-    "Авто Еліт",
-    "Імперське Авто",
-    "Професійне Авто",
-    "Авто Експрес",
-    "Авто Преміум",
+    "Volkswagen",
+    "Ford",
 ]
 
 
@@ -47,34 +39,24 @@ class Command(BaseCommand):
         OrderQuantity.objects.all().delete()
         Order.objects.all().delete()
 
-        password = os.getenv("DJANGO_ADMIN_PASSWORD", "admin")
-
-        user = User.objects.create_superuser(
-            username="admin", email="admin@admin.com", password=password, is_staff=True
-        )
-        email, _ = EmailAddress.objects.get_or_create(user=user)
-
-        email.verified = True
-        email.primary = True
-        email.save()
-
-        for item in car_brands_and_models:
-            random_price = random.randint(10000, 50000)
-
-            CarType.objects.create(brand=item[0], model=item[1], price=random_price)
-
-        cars_type = CarType.objects.all()
-        for car_type in cars_type:
-            for _ in range(3):
-                Car.objects.create(
-                    car_type=car_type,
-                    color=random.choice(color),
-                    year=random.randint(2015, 2023),
-                )
-
         for dealer in dealer_ship_names:
-            new_dealership = Dealership.objects.create(name=dealer)
-            available_cars = Car.objects.all()
-            k = random.randint(4, 10)
-            selected_brands = random.sample(list(available_cars), k=k)
-            new_dealership.available_car.set(selected_brands)
+            Dealership.objects.create(name=dealer)
+        dealerships = Dealership.objects.all()
+        for item in cars:
+            car_type = CarType.objects.create(
+                brand=item[0], model=item[1], price=item[2]
+            )
+            for dealership in dealerships:
+                if car_type.brand == dealership.name:
+                    for _ in range(5):
+                        car = Car.objects.create(
+                            car_type=car_type,
+                            color=random.choice(color),
+                            year=item[3],
+                        )
+                        with open(item[4], "rb") as file:
+                            car.photo.save(item[4], file)
+                        dealership.available_car.add(car)
+                        dealership.save()
+
+        self.stdout.write(self.style.SUCCESS("База даних оновлена!"))
