@@ -29,7 +29,7 @@ def dealership_client(request):
         return redirect(reverse("car", args=[dealership_id]))
     if "delete" in request.POST:
         dealership_id = request.POST.get("delete")
-        dealership = Dealership.objects.get(id=[dealership_id])
+        dealership = Dealership.objects.get(id=dealership_id)
         dealership.delete()
     if "edit" in request.POST:
         dealership_id = request.POST.get("edit")
