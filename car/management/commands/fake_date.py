@@ -9,8 +9,6 @@ from ...models import Car, CarType, Dealership, Licence, Order, OrderQuantity
 
 fake = Faker("uk_UA")
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_application_credentials.json"
-
 cars = [
     ["Volkswagen", "Touareg", 2500000, 2024, "car/static/VWTouareg.png"],
     ["Volkswagen", "Arteon", 1800000, 2023, "car/static/VWArteon.png"],
